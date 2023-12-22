@@ -1,8 +1,22 @@
 let heroes = [
-    ["Axe", "Tank"],
-    ["Crystal Maiden", "Support"],
-    ["Crystal", "Supp"]
+    {
+        name: "Axe",
+        classHero: "Tank",
+        url: "https://api.dicebear.com/7.x/avataaars/svg?seed=2vwb0h"
+    },
+    {
+        name: "Crystal Maiden",
+        classHero: "Support",
+        url: "https://api.dicebear.com/7.x/avataaars/svg?seed=2cncp"
+    },
+    {
+        name: "Capitan America",
+        classHero: "Avengers",
+        url: "https://api.dicebear.com/7.x/avataaars/svg?seed=dl3my"
+    }
 ];
+
+//
 
 const handleDelete = (cardButton) => {
     const hero = cardButton.dataset.hero;
@@ -10,7 +24,9 @@ const handleDelete = (cardButton) => {
     const removeSpaces = (str) => str.split(" ").join("");
     const cardId = removeSpaces(hero) + removeSpaces(classes);
     heroes = heroes.filter((card) => {
-        return cardId !== removeSpaces(card[0]) + removeSpaces(card[1]);
+        return (
+            cardId !== removeSpaces(card.name) + removeSpaces(card.classHero)
+        );
     });
     displayHeroes();
 };
@@ -27,30 +43,33 @@ function displayHeroes() {
         row.classList.add("row");
         heroesContainer.appendChild(row);
 
-        for (const [hero, classes] of heroesSlice) {
+        for (let card of heroesSlice) {
             let heroDiv = document.createElement("div");
             heroDiv.classList.add("card");
-            const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${(
-                Math.random() + 1
-            )
-                .toString(36)
-                .substring(7)}`;
+            card.url = card.url
+                ? card.url
+                : `https://api.dicebear.com/7.x/avataaars/svg?seed=${(
+                      Math.random() + 1
+                  )
+                      .toString(36)
+                      .substring(7)}`;
             heroDiv.innerHTML = `
 <img
-    src='${avatarUrl}'
+    src='${card.url}'
     class="rounded-circle shadow-1-strong me-3"
     alt="avatar"
     width="65"
     height="65"
 />
-<h3>${hero}</h3>
-<p>${classes}</p>
-<button data-hero="${hero}" data-classes="${classes}" onclick="handleDelete(this)">Delete</button>`;
+<h3>${card.name}</h3>
+<p>${card.classHero}</p>
+<button data-hero="${card.name}" data-classes="${card.classHero}" onclick="handleDelete(this)">Delete</button>`;
 
             // Добавляем карточку героя в контейнер
             row.appendChild(heroDiv);
         }
     }
+    console.log("heroes:", heroes);
 }
 
 // если в начале работы приложения массив heroes имеет данные, то выводим их на экран
@@ -67,7 +86,7 @@ function addHero() {
 
     newHeroName &&
         newHeroClass &&
-        (heroes = [...heroes, [newHeroName, newHeroClass]]);
+        (heroes = [...heroes, { name: newHeroName, classHero: newHeroClass }]);
     /*
         Используем функцию, которую мы подготовили в прошлом уроке,
         чтобы обновить список героев на странице
