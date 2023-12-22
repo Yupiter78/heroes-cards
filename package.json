@@ -1,0 +1,14 @@
+{
+  "name": "heroes_cards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vedernikova Dariya",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "3.1.1"
+  }
+}
